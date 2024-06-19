@@ -7,7 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Datos\Hibot\Models\Conversations\" />
+    <Folder Include="Datos\Infinity\Items\" />
+    <Folder Include="Datos\Infinity\Comments\" />
+    <Folder Include="Datos\Infinity\Attachaments\" />
   </ItemGroup>
 
 </Project>
