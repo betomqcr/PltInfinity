@@ -43,6 +43,7 @@ namespace InfintyHibotPlt.Datos.Models
             modelBuilder.Entity<Messages>().Property(e => e.idHibotMessages).IsRequired();
             modelBuilder.Entity<Messages>().Property(e => e.mediaType).IsRequired();
             modelBuilder.Entity<Messages>().Property(e => e.media).IsRequired();
+            
 
             //Aqui empieza el armado de la bitacora
 

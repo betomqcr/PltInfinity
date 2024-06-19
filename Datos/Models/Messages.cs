@@ -11,6 +11,7 @@ namespace InfintyHibotPlt.Datos.Models
         public string idHibotMessages { get; set; }
         public string media { get; set; }
         public string mediaType { get; set; }
+        public long idConversation { get; set; }
 
     }
 }
