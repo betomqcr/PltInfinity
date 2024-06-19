@@ -29,5 +29,35 @@ namespace InfintyHibotPlt.Negocio.Class
                 return 0;
             }
         }
+
+        public void createMessages(Messages messages) 
+        {
+            try
+            {
+                context.Messages.Add(messages);
+                context.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public void createBitacora(Bitacora bitacora)
+        {
+            try
+            {
+                context.Bitacora.Add(bitacora);
+                context.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

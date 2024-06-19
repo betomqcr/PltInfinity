@@ -46,12 +46,25 @@ namespace InfintyHibotPlt.Controllers
                     {
                         Messages messages = new Messages
                         {
-                            
-
+                            idConversation = idConvesartion,
+                            content = temp.Content,
+                            personContent = temp.From,
+                            created = temp.Created,
+                            idHibotMessages = temp.Id,
+                            media = temp.media.ToString(),
+                            mediaType = temp.mediaType
                         };
-                        
+                        hibotManager.createMessages(messages);
                     }
-       
+
+                    Bitacora bitacora = new Bitacora
+                    {
+                        idConversation= idConvesartion,
+                        Estado = request.Conversations[0].Typing,
+                    };
+
+                   bitacora.jsonEntrada= request.ToString();
+
                     return Ok("Recibido");
                 }
                 else
