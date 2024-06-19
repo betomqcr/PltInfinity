@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Reflection;
 
 namespace InfintyHibotPlt.Datos.Models
 {
@@ -14,19 +15,7 @@ namespace InfintyHibotPlt.Datos.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            //Aqui empieza el armado de la tabla de Conversacion 
-
-            
-
-            //Aqui empieza el armado de los mensajes de la conversacion
-
-            
-            
-
-            //Aqui empieza el armado de la bitacora
-
-            
-
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         }
 
