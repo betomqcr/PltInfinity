@@ -24,7 +24,6 @@
     <Folder Include="Datos\Infinity\Items\" />
     <Folder Include="Datos\Infinity\Comments\" />
     <Folder Include="Datos\Infinity\Attachaments\" />
-    <Folder Include="Datos\Data\" />
   </ItemGroup>
 
 </Project>
