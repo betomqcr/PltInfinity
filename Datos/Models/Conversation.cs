@@ -12,5 +12,8 @@
         public string typing { get; set; }
         public long idConversation { get; set; }
         public string idHibotConversation {  get; set; }
+        public DateTimeOffset closed { get; set; }
+        public DateTimeOffset create { get; set; }
+        public DateTimeOffset assigend { get; set; }
     }
 }

@@ -57,11 +57,18 @@ namespace InfintyHibotPlt.Migrations
 
                     b.Property<string>("agente")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("agenteEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("assigend")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("closed")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("contactName")
                         .IsRequired()
@@ -73,17 +80,21 @@ namespace InfintyHibotPlt.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<DateTimeOffset>("create")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("estado")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("idHibotConversation")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("idItemInfinity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("typing")
                         .IsRequired()
@@ -111,6 +122,9 @@ namespace InfintyHibotPlt.Migrations
 
                     b.Property<DateTime>("created")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("idConversation")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("idHibotMessages")
                         .IsRequired()

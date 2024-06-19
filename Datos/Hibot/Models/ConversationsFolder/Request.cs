@@ -19,7 +19,7 @@ namespace InfintyHibotPlt.Datos.Hibot.Models.ConversationsFolder
 
         [JsonProperty("_IMTMETHOD_")]
         //[JsonProperty(PropertyName = "_IMTMETHOD_", Required = Required.Default)]
-        public string _Imtmethod_ { get; set; }
+        public string _IMTMETHOD_ { get; set; }
 
         public static Request FromJson(string json) => JsonConvert.DeserializeObject<Request>(json, InfintyHibotPlt.Datos.Hibot.Models.ConversationsFolder.Converter.Settings);
     }

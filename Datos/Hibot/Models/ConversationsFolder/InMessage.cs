@@ -13,17 +13,17 @@ namespace InfintyHibotPlt.Datos.Hibot.Models.ConversationsFolder
         public DateTimeOffset? Created { get; set; }
 
         [JsonProperty("sender")]
-        public string Sender { get; set; }
+        public string? Sender { get; set; }
 
         [JsonProperty("recipient")]
-        public string Recipient { get; set; }
+        public string? Recipient { get; set; }
 
         [JsonProperty("from")]
-        public string From { get; set; }
+        public string? From { get; set; }
 
         //[JsonProperty("content", NullValueHandling = NullValueHandling.Ignore)]
         [JsonProperty(PropertyName = "content", Required = Required.Default)]
-        public string Content { get; set; }
+        public string? Content { get; set; }
 
         [JsonProperty("status")]
         public string Status { get; set; }
