@@ -11,11 +11,13 @@ namespace InfintyHibotPlt.Controllers
     [Route("api/hibot")]
     public class ConversationsController : Controller
     {
-        private readonly HibotManager hibotManager;
-        public ConversationsController() 
+        
+        private readonly ApplicationDbContext context;
+        public ConversationsController(ApplicationDbContext _context) 
         {
-            hibotManager = new HibotManager();
+            this.context = _context;
         }
+
         
         [HttpPost]
         public async Task<IActionResult> Recibir(Request request)
@@ -24,7 +26,7 @@ namespace InfintyHibotPlt.Controllers
             {
                 if(request != null)
                 {
-                    Conversation conversation = new Conversation 
+                    Conversation conversation = new Conversation
                     {
                         contactName = request.Conversations[0].Contacts[0].Fields.Name,
                         contactPhoneWA = request.Conversations[0].Contacts[0].Account,
@@ -39,31 +41,43 @@ namespace InfintyHibotPlt.Controllers
 
                     };
 
-                    long idConvesartion = hibotManager.createConversation(conversation);
+                    context.Conversations.Add(conversation);
+                    context.SaveChanges();
+
+                    long idConvesartion = context.Conversations.Where(x => x.idHibotConversation.Equals(conversation.idHibotConversation)).First().idConversation;
 
 
                     foreach (InMessage temp in request.Conversations[0].Messages)
                     {
                         Messages messages = new Messages
                         {
-                            idConversation = idConvesartion,
+                            idConversation = idConvesartion,                            
                             content = temp.Content,
                             personContent = temp.From,
                             created = temp.Created,
-                            idHibotMessages = temp.Id,
-                            media = temp.media.ToString(),
-                            mediaType = temp.mediaType
+                            idHibotMessages = temp.Id
                         };
-                        hibotManager.createMessages(messages);
+
+                        if(temp.media!=null)
+                        {
+                            messages.media = temp.media.ToString();
+                            messages.mediaType = temp.mediaType;
+                        }
+                            
+                        context.Messages.Add(messages);
+                        context.SaveChanges();
                     }
 
                     Bitacora bitacora = new Bitacora
                     {
-                        idConversation= idConvesartion,
+                        idConversation = idConvesartion,
                         Estado = request.Conversations[0].Typing,
                     };
 
-                   bitacora.jsonEntrada= request.ToString();
+                    bitacora.jsonEntrada = request.ToString();
+
+                    context.Bitacora.Add(bitacora);
+                    context.SaveChanges();
 
                     return Ok("Recibido");
                 }

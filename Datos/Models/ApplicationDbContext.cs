@@ -11,10 +11,7 @@ namespace InfintyHibotPlt.Datos.Models
                 
         }
 
-        public ApplicationDbContext() 
-        {
-
-        }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
