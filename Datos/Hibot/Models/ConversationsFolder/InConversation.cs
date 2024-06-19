@@ -51,10 +51,10 @@ namespace InfintyHibotPlt.Datos.Hibot.Models.ConversationsFolder
         public Channel Channel { get; set; }
 
         [JsonProperty("asa")]
-        public long Asa { get; set; }
+        public float Asa { get; set; }
 
         [JsonProperty("creationAsa")]
-        public long CreationAsa { get; set; }
+        public float CreationAsa { get; set; }
 
         [JsonProperty("assignmentType")]
         public string AssignmentType { get; set; }

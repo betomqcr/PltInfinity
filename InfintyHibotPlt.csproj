@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Datos\Infinity\Items\" />
     <Folder Include="Datos\Infinity\Comments\" />
     <Folder Include="Datos\Infinity\Attachaments\" />

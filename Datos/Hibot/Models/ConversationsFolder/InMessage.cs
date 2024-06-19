@@ -8,7 +8,8 @@ namespace InfintyHibotPlt.Datos.Hibot.Models.ConversationsFolder
         [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonProperty("created", NullValueHandling = NullValueHandling.Ignore)]
+        //[JsonProperty("created", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "created", Required = Required.Default)]
         public DateTimeOffset? Created { get; set; }
 
         [JsonProperty("sender")]
@@ -18,24 +19,29 @@ namespace InfintyHibotPlt.Datos.Hibot.Models.ConversationsFolder
         public string Recipient { get; set; }
 
         [JsonProperty("from")]
-        public From From { get; set; }
+        public string From { get; set; }
 
-        [JsonProperty("content", NullValueHandling = NullValueHandling.Ignore)]
+        //[JsonProperty("content", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "content", Required = Required.Default)]
         public string Content { get; set; }
 
         [JsonProperty("status")]
-        public Status Status { get; set; }
+        public string Status { get; set; }
 
-        [JsonProperty("errorDescription", NullValueHandling = NullValueHandling.Ignore)]
-        public string ErrorDescription { get; set; }
+        //[JsonProperty("errorDescription", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "errorDescription", Required = Required.Default)]
+        public string? errorDescription { get; set; }
 
-        [JsonProperty("media", NullValueHandling = NullValueHandling.Ignore)]
-        public Uri Media { get; set; }
+        //[JsonProperty("media", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "media", Required = Required.Default)]
+        public Uri? media { get; set; }
 
-        [JsonProperty("mediaType", NullValueHandling = NullValueHandling.Ignore)]
-        public MediaType? MediaType { get; set; }
+        //[JsonProperty("mediaType", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "mediaType", Required = Required.Default)]
+        public string? mediaType { get; set; }
 
-        [JsonProperty("createdpub", NullValueHandling = NullValueHandling.Ignore)]
+        //[JsonProperty("createdpub", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "createdpub", Required = Required.Default)]
         public DateTimeOffset? Createdpub { get; set; }
     }
 }
