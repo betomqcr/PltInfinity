@@ -10,5 +10,7 @@
         public string estado { get; set; }
         public List<Messages> messages {  get; set; }
         public string typing { get; set; }
+        public long idConversation { get; set; }
+        public string idHibotConversation {  get; set; }
     }
 }
