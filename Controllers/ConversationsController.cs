@@ -20,6 +20,7 @@ namespace InfintyHibotPlt.Controllers
 
         
         [HttpPost]
+        [Route("Recibir")]
         public async Task<IActionResult> Recibir(Request request)
         {
             try
@@ -97,6 +98,7 @@ namespace InfintyHibotPlt.Controllers
         }
 
         [HttpPost]
+        [Route("RecibirLista")]
         public async Task<IActionResult> RecibirLista(List<Request> request)
         {
             try
