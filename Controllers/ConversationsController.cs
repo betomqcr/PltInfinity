@@ -4,6 +4,7 @@ using InfintyHibotPlt.Negocio.Class;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Net;
 
 namespace InfintyHibotPlt.Controllers
 {
@@ -13,12 +14,15 @@ namespace InfintyHibotPlt.Controllers
     {
         
         private readonly ApplicationDbContext context;
-        public ConversationsController(ApplicationDbContext _context) 
+        public IWebHostEnvironment Environment;
+        public ConversationsController(ApplicationDbContext _context, IWebHostEnvironment environment) 
         {
             this.context = _context;
+            this.Environment = environment;
         }
 
         
+
         [HttpPost]
         [Route("Recibir")]
         public async Task<IActionResult> Recibir(Request request)
@@ -67,6 +71,12 @@ namespace InfintyHibotPlt.Controllers
                             
                         context.Messages.Add(messages);
                         context.SaveChanges();
+
+                        if(temp.media != null)
+                        {
+                            long idMessage = context.Messages.Where(x=>x.idHibotMessages.Equals(temp.Id)).FirstOrDefault().idMessages;
+
+                        }
                     }
                     Bitacora bitacora = new Bitacora
                     {
@@ -176,6 +186,27 @@ namespace InfintyHibotPlt.Controllers
                 return Ok(ex);
             }
 
+        }
+
+        [HttpPost]
+        [Route("ObtenerScript")]
+        public async Task<IActionResult> ObtenerRutaDelProyecto()
+        {
+            try
+            {
+                WebClient webClient = new WebClient();
+                Uri myUri = new Uri(@"https://assets.hibot.us/images/hbt-content-based/c0daaac0df65541a2d88cd667027dc49792f55eac9c8f5641f05a092542695b1@jpg", UriKind.Absolute);
+                var filename = System.IO.Path.Combine(Environment.ContentRootPath, "Download");
+                webClient.DownloadFile(myUri, filename);
+
+                return Ok();
+                
+            }
+            catch (Exception ex)
+            {
+
+                return Ok(ex);
+            }
         }
     }
 }

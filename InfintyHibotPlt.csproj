@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Datos\Infinity\Attachaments\" />
+    <Folder Include="Download\" />
   </ItemGroup>
 
 </Project>

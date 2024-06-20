@@ -4,6 +4,7 @@ using InfintyHibotPlt.Datos.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfintyHibotPlt.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240620175917_AgregarImagenes")]
+    partial class AgregarImagenes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,6 +141,9 @@ namespace InfintyHibotPlt.Migrations
 
                     b.Property<DateTimeOffset>("fecha")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("idMessages")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("messagesidMessages")
                         .HasColumnType("bigint");
