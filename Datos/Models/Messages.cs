@@ -10,10 +10,7 @@ namespace InfintyHibotPlt.Datos.Models
         public DateTimeOffset? created { get; set; }
         public string idHibotMessages { get; set; }
         public string? media { get; set; }
-        public string? mediaType { get; set; }
-        public long idConversation { get; set; }
-        
-        
-
+        public string? mediaType { get; set; } 
+        public long ConversationidConversation {  get; set; }
     }
 }

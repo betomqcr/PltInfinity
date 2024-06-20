@@ -18,7 +18,8 @@ namespace InfintyHibotPlt.Datos.Models.settings
             builder.Property(e => e.idHibotMessages).IsRequired();
             builder.Property(e => e.mediaType).IsRequired(false);
             builder.Property(e => e.media).IsRequired(false);
-            builder.Property(e=> e.idConversation).IsRequired().HasColumnName("ConversationidConversation");
+            builder.Property(e=>e.ConversationidConversation).IsRequired();
+            
             
         }
     }
