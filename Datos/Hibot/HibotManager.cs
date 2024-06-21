@@ -1,4 +1,5 @@
 ﻿using InfintyHibotPlt.Datos.Models;
+using System;
 
 namespace InfintyHibotPlt.Datos.Hibot
 {
@@ -12,16 +13,29 @@ namespace InfintyHibotPlt.Datos.Hibot
 
         
 
-        public void ProcessImage(Messages messages)
+        public async Task<string> ProcessImage(string url)
         {
-            try
+            using (var httpClient = new HttpClient())
             {
+                try
+                {
+                    var response = await httpClient.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var fileBytes = await response.Content.ReadAsByteArrayAsync();
+                        return Convert.ToBase64String(fileBytes);
+                    }
+                    else
+                    {
+                        
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
 
-            }
-            catch (Exception ex)
-            {
-
-                throw;
+                    return ex.ToString();  
+                }
             }
 
         }

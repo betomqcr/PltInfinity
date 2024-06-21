@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
 using System.Dynamic;
 using System.Net;
 
@@ -25,7 +26,7 @@ namespace InfintyHibotPlt.Controllers
         }
 
         [HttpPost]
-        [Route("hibot")]
+        [Route("recibir")]
         public IActionResult HandleWebhook([FromBody] dynamic payload)
         {
             try
@@ -107,25 +108,9 @@ namespace InfintyHibotPlt.Controllers
         }
      
          
-        [HttpPost]
-        [Route("ObtenerScript")]
-        public async Task<IActionResult> ObtenerRutaDelProyecto()
-        {
-            try
-            {
-                WebClient webClient = new WebClient();
-                Uri myUri = new Uri(@"https://assets.hibot.us/images/hbt-content-based/c0daaac0df65541a2d88cd667027dc49792f55eac9c8f5641f05a092542695b1@jpg", UriKind.Absolute);
-                var filename = System.IO.Path.Combine(Environment.ContentRootPath, "Download");
-                webClient.DownloadFile(myUri, filename);
+        
+        
 
-                return Ok();
-                
-            }
-            catch (Exception ex)
-            {
-
-                return Ok(ex);
-            }
-        }
+        
     }
 }
