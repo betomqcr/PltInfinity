@@ -1,6 +1,6 @@
-﻿using InfintyHibotPlt.Datos.Hibot.Models.ConversationsFolder;
+﻿using InfintyHibotPlt.Datos.Hibot;
+using InfintyHibotPlt.Datos.Hibot.Models.ConversationsFolder;
 using InfintyHibotPlt.Datos.Models;
-using InfintyHibotPlt.Negocio.Class;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -27,7 +27,7 @@ namespace InfintyHibotPlt.Controllers
 
         [HttpPost]
         [Route("recibir")]
-        public IActionResult HandleWebhook([FromBody] dynamic payload)
+        public async Task<IActionResult> HandleWebhook([FromBody] dynamic payload)
         {
             try
             {
@@ -75,7 +75,24 @@ namespace InfintyHibotPlt.Controllers
 
                         if (temp.media != null)
                         {
-                            long idMessage = context.Messages.Where(x => x.idHibotMessages.Equals(temp.Id)).FirstOrDefault().idMessages;
+                            string media = temp.media.ToString() ?? "";
+                            if (!temp.mediaType.Equals("STICKER"))
+                            {
+                                HibotManager hibot = new HibotManager();
+                                long idMessage = context.Messages.Where(x => x.idHibotMessages.Equals(temp.Id) && !x.mediaType.Equals("STICKER")).FirstOrDefault().idMessages;
+                                string file = await hibot.ProcessImage(media);
+                                 Imagenes imagenes = new Imagenes
+                                 {
+                                     fecha = DateTimeOffset.Now,
+                                     Archivo = file,
+                                     messagesidMessages = idMessage
+                                 };
+                                
+                                context.Imagenes.Add(messages);
+                                context.SaveChanges();
+                            }
+                            
+
 
                         }
                     }

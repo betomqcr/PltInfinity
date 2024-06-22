@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InfintyHibotPlt.Migrations
 {
-    public partial class Inicial : Migration
+    public partial class inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,6 +48,20 @@ namespace InfintyHibotPlt.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ErroresBitacora",
+                columns: table => new
+                {
+                    idError = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    menssageError = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ErroresBitacora", x => x.idError);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
                 {
@@ -59,7 +73,7 @@ namespace InfintyHibotPlt.Migrations
                     idHibotMessages = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     media = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     mediaType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConversationidConversation = table.Column<long>(type: "bigint", nullable: true)
+                    ConversationidConversation = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,8 +82,35 @@ namespace InfintyHibotPlt.Migrations
                         name: "FK_Messages_Conversations_ConversationidConversation",
                         column: x => x.ConversationidConversation,
                         principalTable: "Conversations",
-                        principalColumn: "idConversation");
+                        principalColumn: "idConversation",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Imagenes",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    fecha = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Archivo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    messagesidMessages = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Imagenes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Imagenes_Messages_messagesidMessages",
+                        column: x => x.messagesidMessages,
+                        principalTable: "Messages",
+                        principalColumn: "idMessages",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Imagenes_messagesidMessages",
+                table: "Imagenes",
+                column: "messagesidMessages");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_ConversationidConversation",
@@ -81,6 +122,12 @@ namespace InfintyHibotPlt.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Bitacora");
+
+            migrationBuilder.DropTable(
+                name: "ErroresBitacora");
+
+            migrationBuilder.DropTable(
+                name: "Imagenes");
 
             migrationBuilder.DropTable(
                 name: "Messages");

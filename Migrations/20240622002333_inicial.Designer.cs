@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfintyHibotPlt.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240619235337_Inicial2")]
-    partial class Inicial2
+    [Migration("20240622002333_inicial")]
+    partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -107,6 +107,51 @@ namespace InfintyHibotPlt.Migrations
                     b.ToTable("Conversations");
                 });
 
+            modelBuilder.Entity("InfintyHibotPlt.Datos.Models.ErroresBitacora", b =>
+                {
+                    b.Property<long>("idError")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("idError"), 1L, 1);
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("menssageError")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("idError");
+
+                    b.ToTable("ErroresBitacora");
+                });
+
+            modelBuilder.Entity("InfintyHibotPlt.Datos.Models.Imagenes", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Archivo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("fecha")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("messagesidMessages")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("messagesidMessages");
+
+                    b.ToTable("Imagenes");
+                });
+
             modelBuilder.Entity("InfintyHibotPlt.Datos.Models.Messages", b =>
                 {
                     b.Property<long>("idMessages")
@@ -145,6 +190,17 @@ namespace InfintyHibotPlt.Migrations
                     b.HasIndex("ConversationidConversation");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("InfintyHibotPlt.Datos.Models.Imagenes", b =>
+                {
+                    b.HasOne("InfintyHibotPlt.Datos.Models.Messages", "messages")
+                        .WithMany()
+                        .HasForeignKey("messagesidMessages")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("messages");
                 });
 
             modelBuilder.Entity("InfintyHibotPlt.Datos.Models.Messages", b =>

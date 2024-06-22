@@ -5,10 +5,10 @@ namespace InfintyHibotPlt.Datos.Hibot
 {
     public class HibotManager
     {
-        public IWebHostEnvironment Environment { get; }
-        public HibotManager(IWebHostEnvironment environment) 
+        
+        public HibotManager() 
         {
-            Environment = environment;
+            
         }
 
         
@@ -39,5 +39,7 @@ namespace InfintyHibotPlt.Datos.Hibot
             }
 
         }
+
+       
     }
 }

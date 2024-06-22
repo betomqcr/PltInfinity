@@ -133,9 +133,9 @@ namespace InfintyHibotPlt.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<byte[]>("Archivo")
+                    b.Property<string>("Archivo")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("fecha")
                         .HasColumnType("datetimeoffset");
