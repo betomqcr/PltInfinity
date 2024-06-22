@@ -88,7 +88,7 @@ namespace InfintyHibotPlt.Controllers
                                      messagesidMessages = idMessage
                                  };
                                 
-                                context.Imagenes.Add(messages);
+                                context.Imagenes.Add(imagenes);
                                 context.SaveChanges();
                             }
                             
