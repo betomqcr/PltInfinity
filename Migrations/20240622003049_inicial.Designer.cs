@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfintyHibotPlt.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240622002333_inicial")]
+    [Migration("20240622003049_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

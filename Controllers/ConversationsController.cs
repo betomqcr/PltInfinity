@@ -18,11 +18,10 @@ namespace InfintyHibotPlt.Controllers
     {
         
         private readonly ApplicationDbContext context;
-        public IWebHostEnvironment Environment;
-        public ConversationsController(ApplicationDbContext _context, IWebHostEnvironment environment) 
+        public ConversationsController(ApplicationDbContext _context) 
         {
             this.context = _context;
-            this.Environment = environment;
+            
         }
 
         [HttpPost]
@@ -86,13 +85,10 @@ namespace InfintyHibotPlt.Controllers
                                      fecha = DateTimeOffset.Now,
                                      Archivo = file,
                                      messagesidMessages = idMessage
-                                 };
-                                
+                                 };                                
                                 context.Imagenes.Add(imagenes);
                                 context.SaveChanges();
-                            }
-                            
-
+                            }                          
 
                         }
                     }
