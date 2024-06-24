@@ -1,5 +1,6 @@
 ﻿using InfintyHibotPlt.Datos.Hibot;
 using InfintyHibotPlt.Datos.Hibot.Models.ConversationsFolder;
+using InfintyHibotPlt.Datos.Infinity;
 using InfintyHibotPlt.Datos.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,14 @@ namespace InfintyHibotPlt.Controllers
     {
         
         private readonly ApplicationDbContext context;
-        public ConversationsController(ApplicationDbContext _context) 
+        public IConfiguration configuration { get; }
+    public ConversationsController(ApplicationDbContext _context, IConfiguration _configuration) 
         {
             this.context = _context;
-            
+            this.configuration = _configuration;
         }
+
+        
 
         [HttpPost]
         [Route("recibir")]
@@ -100,6 +104,8 @@ namespace InfintyHibotPlt.Controllers
                     bitacora.jsonEntrada = Serialize.ToJson(request);
                     context.Bitacora.Add(bitacora);
                     context.SaveChanges();
+                    InfinityManager infinity = new InfinityManager(configuration, context);
+                    infinity.CreateItemInfinity(idConvesartion);
 
                     return Ok();
                 }
