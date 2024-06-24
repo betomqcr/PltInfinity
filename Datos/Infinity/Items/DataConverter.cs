@@ -15,8 +15,8 @@ namespace InfintyHibotPlt.Datos.Infinity.Items
                     var stringValue = serializer.Deserialize<string>(reader);
                     return new Data { String = stringValue };
                 case JsonToken.StartArray:
-                    var arrayValue = serializer.Deserialize<List<Guid>>(reader);
-                    return new Data { UuidArray = arrayValue };
+                    var arrayValue = serializer.Deserialize<List<Datum>>(reader);
+                    return new Data { AnythingArray = arrayValue };
             }
             throw new Exception("Cannot unmarshal type Data");
         }
@@ -29,9 +29,9 @@ namespace InfintyHibotPlt.Datos.Infinity.Items
                 serializer.Serialize(writer, value.String);
                 return;
             }
-            if (value.UuidArray != null)
+            if (value.AnythingArray != null)
             {
-                serializer.Serialize(writer, value.UuidArray);
+                serializer.Serialize(writer, value.AnythingArray);
                 return;
             }
             throw new Exception("Cannot marshal type Data");

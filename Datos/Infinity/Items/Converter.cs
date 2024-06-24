@@ -13,6 +13,7 @@ namespace InfintyHibotPlt.Datos.Infinity.Items
             Converters =
             {
                 DataConverter.Singleton,
+                DatumConverter.Singleton,
                 new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
             },
         };

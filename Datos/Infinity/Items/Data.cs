@@ -2,11 +2,12 @@
 {
     public partial struct Data
     {
+        public List<Datum> AnythingArray;
         public string String;
-        public List<Guid> UuidArray;
 
+        public static implicit operator Data(List<Datum> AnythingArray) => new Data { AnythingArray = AnythingArray };
         public static implicit operator Data(string String) => new Data { String = String };
-        public static implicit operator Data(List<Guid> UuidArray) => new Data { UuidArray = UuidArray };
+
 
     }
 }

@@ -2,6 +2,7 @@
 using InfintyHibotPlt.Datos.Infinity.Items;
 using InfintyHibotPlt.Datos.Infinity.Models;
 using InfintyHibotPlt.Datos.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -34,7 +35,7 @@ namespace InfintyHibotPlt.Datos.Infinity
         {
             this.Configuration = configuration;
             this.Context = _context;
-            this.Board = Configuration["Infinity:Token"];
+            this.Board = Configuration["Infinity:Board"];
             this.WorkSpace = Configuration["Infinity:WorkSpace"];
             this.Folder = Configuration["Infinity:Folder"];
             this.Token = Configuration["Infinity:Token"];
@@ -93,19 +94,20 @@ namespace InfintyHibotPlt.Datos.Infinity
             try
             {
                 InfintyHibotPlt.Datos.Infinity.Items.Response.Response marca = new InfintyHibotPlt.Datos.Infinity.Items.Response.Response();
-
+                string url = ApiUrl + "/api/v2/workspaces/" + WorkSpace + "/boards/" + Board + "/items";
+                string contenido = item.ToJson();
                 using (var client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token);
                     var task = Task.Run(async () =>
                     {
                         return await client.PostAsync(
-                            ApiUrl, new StringContent(item.ToJson(), Encoding.UTF8, "application/json"));
+                           url , new StringContent(contenido, Encoding.UTF8, "application/json"));
                     });
 
                     HttpResponseMessage message = task.Result;
 
-                    if (message.StatusCode == System.Net.HttpStatusCode.OK)
+                    if (message.StatusCode == System.Net.HttpStatusCode.Created)
                     {
 
                         var task2 = Task<string>.Run(async () =>
@@ -129,8 +131,7 @@ namespace InfintyHibotPlt.Datos.Infinity
             {
                 throw ex;
             }
-        }
-
+        }               
         public Value ValueItem(string pregunta, string respuesta)
         {
             try
@@ -143,15 +144,26 @@ namespace InfintyHibotPlt.Datos.Infinity
 
                 if(pregunta.Equals(Status) || pregunta.Equals(Origen))
                 {
-                    List<Guid> guids = new List<Guid>();
-                    Guid guid = Guid.Parse(respuesta);
+                    List<Datum> guids = new List<Datum>();
+                    Datum guid = Guid.Parse(respuesta);
                     guids.Add(guid);
 
                     Value.Data = guids;
                 }
                 else
                 {
-                    Value.Data = respuesta; 
+                    if (pregunta.Equals(AssignedPor))
+                    {
+                        List<Datum> res = new List<Datum>();
+                        long data = int.Parse(respuesta);
+                        res.Add(data);
+
+                        Value.Data = res;
+                    }
+                    else
+                    {
+                        Value.Data = respuesta;
+                    }
                 }
                 return Value;
             }
@@ -160,8 +172,6 @@ namespace InfintyHibotPlt.Datos.Infinity
                 throw;
             }
         }
-
-
         public void CreateItemInfinity(long id)
         {
             try
@@ -169,10 +179,59 @@ namespace InfintyHibotPlt.Datos.Infinity
                 Conversation conversation = Context.Conversations.Find(id);
                 if(conversation!=null)
                 {
+                    List<Value> values = new List<Value>();
 
+                    Value Value1 = ValueItem(Status, StatusTiketOpen);
+                    Value Value2 = ValueItem(NumWA, conversation.contactPhoneWA);
+                    Value Value3 = ValueItem(Name, conversation.contactName);
+                    Value Value4 = ValueItem(Origen, OrigenResp);
+                    Value Value5 = ValueItem(AssignedPor, Agents.Where(x=>x.Nombre.Equals(conversation.agente)).FirstOrDefault().AgenteCod.ToString());
+
+                    values.Add(Value1);
+                    values.Add(Value2);
+                    values.Add(Value3);
+                    values.Add(Value4);
+                    values.Add(Value5);
+
+                    Item item = new Item
+                    {
+                        FolderId = Folder,
+                        Values = values
+                    };
+
+                    InfintyHibotPlt.Datos.Infinity.Items.Response.Response ItemResponse= InsertItemAPI(item);
+                    conversation.idItemInfinity= ItemResponse.Id.ToString();
+                    Context.Update(conversation);
+                    Context.SaveChanges();
 
                 }
                 
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public void CreateComentsItem()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public void CreateImageForComments()
+        {
+            try
+            {
+
+
             }
             catch (Exception ex)
             {
