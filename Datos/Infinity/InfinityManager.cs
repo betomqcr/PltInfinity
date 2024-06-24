@@ -298,7 +298,24 @@ namespace InfintyHibotPlt.Datos.Infinity
             {
                 Comment coment = new Comment
                 {
-                    Text = "<p>" + "" + "<p/>"
+                    Text = "<p><a href=\"https://startinfinity.s3.us-east-2.amazonaws.com/item-files/40362/SFh5TRGNcZkZlOFGkRw42YYjWzMmFYhXSPTY5ePT.mp4\" " +
+                          "data-attachment=\"{&quot;" +
+                          "id&quot;"+attach.Id+",&quot;" +
+                          "link&quot;:&quot;https://startinfinity.s3.us-east-2.amazonaws.com/item-files/40362/SFh5TRGNcZkZlOFGkRw42YYjWzMmFYhXSPTY5ePT.mp4&quot;,&quot;" +
+                          "path&quot;:&quot;item-files/40362/SFh5TRGNcZkZlOFGkRw42YYjWzMmFYhXSPTY5ePT.mp4&quot;" +
+                          ",&quot;original_name&quot;:&quot;32cfc851e4d8686c8a7f32bde6f498fca162279481679fb0136e1769e4e05d.mp4&quot;" +
+                          ",&quot;filesize&quot;:674982,&quot;" +
+                          "thumb&quot;:null,&quot;" +
+                          "created_at&quot;:&quot;2024-06-22T00:02:53.000000Z&quot;" +
+                          ",&quot;updated_at&quot;:&quot;2024-06-22T00:02:53.000000Z&quot;" +
+                          ",&quot;team_id&quot;:40362,&quot;" +
+                          "deleted_at&quot;:null,&quot;" +
+                          "checked_at&quot;:null,&quot;" +
+                          "extension&quot;:&quot;mp4&quot;" +
+                          ",&quot;basename&quot;:&quot;32cfc851e4d8686c8a7f32bde6f498fca162279481679fb0136e1769e4e05d.mp4&quot;" +
+                          ",&quot;filename&quot;:&quot;32cfc851e4d8686c8a7f32bde6f498fca162279481679fb0136e1769e4e05d&quot;}\" " +
+                          "target=\"_blank\" rel=\"noopener noreferrer nofollow\">" +
+                          "32cfc851e4d8686c8a7f32bde6f498fca162279481679fb0136e1769e4e05d.mp4</a></p>"
                 };
                 insertComment(id, coment);
             }
