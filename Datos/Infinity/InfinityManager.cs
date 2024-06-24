@@ -1,10 +1,12 @@
 ﻿using InfintyHibotPlt.Datos.Hibot.Models.ConversationsFolder;
+using InfintyHibotPlt.Datos.Infinity.Comments;
 using InfintyHibotPlt.Datos.Infinity.Items;
 using InfintyHibotPlt.Datos.Infinity.Models;
 using InfintyHibotPlt.Datos.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 using System.Text;
+using System.IO;
 
 namespace InfintyHibotPlt.Datos.Infinity
 {
@@ -131,7 +133,50 @@ namespace InfintyHibotPlt.Datos.Infinity
             {
                 throw ex;
             }
-        }               
+        }
+        public void insertComment(string item,Comment coments)// obtener las ventas del api
+        {
+            try
+            {
+                InfintyHibotPlt.Datos.Infinity.Items.Response.Response marca = new InfintyHibotPlt.Datos.Infinity.Items.Response.Response();
+                string url = ApiUrl + "/api/v2/workspaces/" + WorkSpace + "/boards/" + Board + "/items/"+item+"/comments";
+                string contenido = coments.ToJson();
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token);
+                    var task = Task.Run(async () =>
+                    {
+                        return await client.PostAsync(
+                           url, new StringContent(contenido, Encoding.UTF8, "application/json"));
+                    });
+
+                    HttpResponseMessage message = task.Result;
+
+                    if (message.StatusCode == System.Net.HttpStatusCode.Created)
+                    {
+
+                        //    var task2 = Task<string>.Run(async () =>
+                        //    {
+                        //        return await message.Content.ReadAsStringAsync();
+                        //    });
+                        //    var jsonstrig = task2.Result;
+                        //    marca = JsonConvert.DeserializeObject<InfintyHibotPlt.Datos.Infinity.Items.Response.Response>(jsonstrig);
+
+
+                    }
+                    else if (message.StatusCode == System.Net.HttpStatusCode.Conflict)
+                    {
+
+                    }
+
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public Value ValueItem(string pregunta, string respuesta)
         {
             try
@@ -180,30 +225,32 @@ namespace InfintyHibotPlt.Datos.Infinity
                 if(conversation!=null)
                 {
                     List<Value> values = new List<Value>();
-
                     Value Value1 = ValueItem(Status, StatusTiketOpen);
                     Value Value2 = ValueItem(NumWA, conversation.contactPhoneWA);
                     Value Value3 = ValueItem(Name, conversation.contactName);
                     Value Value4 = ValueItem(Origen, OrigenResp);
                     Value Value5 = ValueItem(AssignedPor, Agents.Where(x=>x.Nombre.Equals(conversation.agente)).FirstOrDefault().AgenteCod.ToString());
-
                     values.Add(Value1);
                     values.Add(Value2);
                     values.Add(Value3);
                     values.Add(Value4);
                     values.Add(Value5);
-
                     Item item = new Item
                     {
                         FolderId = Folder,
                         Values = values
                     };
-
                     InfintyHibotPlt.Datos.Infinity.Items.Response.Response ItemResponse= InsertItemAPI(item);
                     conversation.idItemInfinity= ItemResponse.Id.ToString();
                     Context.Update(conversation);
                     Context.SaveChanges();
 
+                    List<Messages> messages = Context.Messages.Where(x=>x.ConversationidConversation==conversation.idConversation).ToList();
+                    foreach(Messages temp in messages)
+                    {
+                        if(temp.content!=null)
+                        CreateComentsItem(conversation.idItemInfinity,temp.content);
+                    }
                 }
                 
             }
@@ -213,11 +260,15 @@ namespace InfintyHibotPlt.Datos.Infinity
                 throw;
             }
         }
-        public void CreateComentsItem()
+        public void CreateComentsItem(string id, string text)
         {
             try
             {
-
+                Comment coment = new Comment
+                {
+                    Text = "<p>"+text+"<p/>"
+                };
+                insertComment(id, coment);
             }
             catch (Exception ex)
             {
@@ -231,6 +282,7 @@ namespace InfintyHibotPlt.Datos.Infinity
             try
             {
 
+                
 
             }
             catch (Exception ex)
