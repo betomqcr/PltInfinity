@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 using System.Text;
 using System.IO;
+using System;
+using System.Text.RegularExpressions;
 
 namespace InfintyHibotPlt.Datos.Infinity
 {
@@ -33,6 +35,7 @@ namespace InfintyHibotPlt.Datos.Infinity
         public string Board { get; set; }
         public string Folder { get; set; }
         public List<AgentConfig> Agents { get; set; }
+        public Attachaments.Response.ResponseAttach ResponseAttach { get; set; }
         public InfinityManager(IConfiguration configuration, ApplicationDbContext _context)
         {
             this.Configuration = configuration;
@@ -56,6 +59,7 @@ namespace InfintyHibotPlt.Datos.Infinity
             this.Origen = Configuration["Infinity:Origen"];
             this.OrigenResp = Configuration["Infinity:OrigenResp"];
             CargarAgents();
+            this.ResponseAttach = new Attachaments.Response.ResponseAttach();
 
         }
         public void CargarAgents()
@@ -248,8 +252,19 @@ namespace InfintyHibotPlt.Datos.Infinity
                     List<Messages> messages = Context.Messages.Where(x=>x.ConversationidConversation==conversation.idConversation).ToList();
                     foreach(Messages temp in messages)
                     {
-                        if(temp.content!=null)
+                        if(temp.mediaType!=null)
                         CreateComentsItem(conversation.idItemInfinity,temp.content);
+                        else
+                        {
+                            Imagenes imagenes = Context.Imagenes.Where(x => x.messagesidMessages == temp.idMessages).FirstOrDefault();
+                            if(imagenes!=null)
+                            {
+                                byte[] file = Convert.FromBase64String(imagenes.Archivo);
+                                CreateImageForComments(file, temp.mediaType);
+
+                            }
+                            
+                        }
                     }
                 }
                 
@@ -277,18 +292,60 @@ namespace InfintyHibotPlt.Datos.Infinity
             }
         }
 
-        public void CreateImageForComments()
+        public void CreateComentsItemFile(string id, Attachaments.Response.ResponseAttach attach )
         {
             try
             {
-
-                
-
+                Comment coment = new Comment
+                {
+                    Text = "<p>" + "" + "<p/>"
+                };
+                insertComment(id, coment);
             }
             catch (Exception ex)
             {
 
                 throw;
+            }
+        }
+
+        public async void  CreateImageForComments(byte[] file,string Type)
+        {
+            try
+            {
+                var byteArrayContent = new ByteArrayContent(file);
+
+                var form = new MultipartFormDataContent();
+                form.Add(byteArrayContent, "archivo", Type);
+                string url = ApiUrl + "/api/v2/workspaces/" + WorkSpace +"/attachments/file";
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, url);
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Bearer " + Token);
+                request.Content= form;
+                var response = await client.SendAsync(request);
+                if(response.StatusCode == System.Net.HttpStatusCode.Created)
+                {
+                    Attachaments.Response.ResponseAttach responseAttach = new Attachaments.Response.ResponseAttach();
+                    var task2 = Task<string>.Run(async () =>
+                    {
+                        return await response.Content.ReadAsStringAsync();
+                    });
+                    var jsonstrig = task2.Result;
+                    ResponseAttach = JsonConvert.DeserializeObject<Attachaments.Response.ResponseAttach>(jsonstrig);
+                    
+                }
+                else
+                {
+                    ResponseAttach = null;
+                }
+
+                
+            }
+            catch (Exception ex)
+            {
+
+                ResponseAttach = null;
             }
         }
     }
