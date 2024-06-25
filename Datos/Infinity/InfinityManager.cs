@@ -92,7 +92,11 @@ namespace InfintyHibotPlt.Datos.Infinity
             catch (Exception ex)
             {
 
-                throw;
+                ErroresBitacora errorBitacora = new ErroresBitacora();
+                errorBitacora.menssageError = ex.ToString();
+                errorBitacora.Fecha = DateTime.Now;
+                Context.ErroresBitacora.Add(errorBitacora);
+                Context.SaveChanges();
             }
         }
         public InfintyHibotPlt.Datos.Infinity.Items.Response.Response InsertItemAPI( Item item)// obtener las ventas del api
@@ -135,7 +139,13 @@ namespace InfintyHibotPlt.Datos.Infinity
             }
             catch (Exception ex)
             {
-                throw ex;
+                ErroresBitacora errorBitacora = new ErroresBitacora();
+                errorBitacora.menssageError = ex.ToString();
+                errorBitacora.Fecha = DateTime.Now;
+                Context.ErroresBitacora.Add(errorBitacora);
+                Context.SaveChanges();
+
+                return null;
             }
         }
         public void insertComment(string item,Comment coments)// obtener las ventas del api
@@ -178,7 +188,11 @@ namespace InfintyHibotPlt.Datos.Infinity
             }
             catch (Exception ex)
             {
-                throw ex;
+                ErroresBitacora errorBitacora = new ErroresBitacora();
+                errorBitacora.menssageError = ex.ToString();
+                errorBitacora.Fecha = DateTime.Now;
+                Context.ErroresBitacora.Add(errorBitacora);
+                Context.SaveChanges();
             }
         }
         public Value ValueItem(string pregunta, string respuesta)
@@ -218,7 +232,13 @@ namespace InfintyHibotPlt.Datos.Infinity
             }
             catch (Exception ex)
             {
-                throw;
+                ErroresBitacora errorBitacora = new ErroresBitacora();
+                errorBitacora.menssageError = ex.ToString();
+                errorBitacora.Fecha = DateTime.Now;
+                Context.ErroresBitacora.Add(errorBitacora);
+                Context.SaveChanges();
+
+                return null;
             }
         }
         public void CreateItemInfinity(long id)
@@ -272,7 +292,11 @@ namespace InfintyHibotPlt.Datos.Infinity
             catch (Exception ex)
             {
 
-                throw;
+                ErroresBitacora errorBitacora = new ErroresBitacora();
+                errorBitacora.menssageError = ex.ToString();
+                errorBitacora.Fecha = DateTime.Now;
+                Context.ErroresBitacora.Add(errorBitacora);
+                Context.SaveChanges();
             }
         }
         public void CreateComentsItem(string id, string text)
@@ -288,7 +312,11 @@ namespace InfintyHibotPlt.Datos.Infinity
             catch (Exception ex)
             {
 
-                throw;
+                ErroresBitacora errorBitacora = new ErroresBitacora();
+                errorBitacora.menssageError = ex.ToString();
+                errorBitacora.Fecha = DateTime.Now;
+                Context.ErroresBitacora.Add(errorBitacora);
+                Context.SaveChanges();
             }
         }
 
@@ -298,31 +326,35 @@ namespace InfintyHibotPlt.Datos.Infinity
             {
                 Comment coment = new Comment
                 {
-                    Text = "<p><a href=\"https://startinfinity.s3.us-east-2.amazonaws.com/item-files/40362/SFh5TRGNcZkZlOFGkRw42YYjWzMmFYhXSPTY5ePT.mp4\" " +
+                    Text = "<p><a href=\""+attach.Link+"\" " +
                           "data-attachment=\"{&quot;" +
                           "id&quot;"+attach.Id+",&quot;" +
-                          "link&quot;:&quot;https://startinfinity.s3.us-east-2.amazonaws.com/item-files/40362/SFh5TRGNcZkZlOFGkRw42YYjWzMmFYhXSPTY5ePT.mp4&quot;,&quot;" +
-                          "path&quot;:&quot;item-files/40362/SFh5TRGNcZkZlOFGkRw42YYjWzMmFYhXSPTY5ePT.mp4&quot;" +
-                          ",&quot;original_name&quot;:&quot;32cfc851e4d8686c8a7f32bde6f498fca162279481679fb0136e1769e4e05d.mp4&quot;" +
-                          ",&quot;filesize&quot;:674982,&quot;" +
+                          "link&quot;:&quot;"+attach.Link+"&quot;,&quot;" +
+                          "path&quot;:&quot;"+attach.Path+"&quot;" +
+                          ",&quot;original_name&quot;:&quot;"+attach.OriginalName+"&quot;" +
+                          ",&quot;filesize&quot;:"+attach.Filesize+",&quot;" +
                           "thumb&quot;:null,&quot;" +
-                          "created_at&quot;:&quot;2024-06-22T00:02:53.000000Z&quot;" +
-                          ",&quot;updated_at&quot;:&quot;2024-06-22T00:02:53.000000Z&quot;" +
-                          ",&quot;team_id&quot;:40362,&quot;" +
+                          "created_at&quot;:&quot;"+attach.CreatedAt+"&quot;" +
+                          ",&quot;updated_at&quot;:&quot;"+attach.UpdatedAt+"&quot;" +
+                          ",&quot;team_id&quot;:"+attach.TeamId+",&quot;" +
                           "deleted_at&quot;:null,&quot;" +
                           "checked_at&quot;:null,&quot;" +
-                          "extension&quot;:&quot;mp4&quot;" +
-                          ",&quot;basename&quot;:&quot;32cfc851e4d8686c8a7f32bde6f498fca162279481679fb0136e1769e4e05d.mp4&quot;" +
-                          ",&quot;filename&quot;:&quot;32cfc851e4d8686c8a7f32bde6f498fca162279481679fb0136e1769e4e05d&quot;}\" " +
+                          "extension&quot;:&quot;"+attach.Extension+"&quot;" +
+                          ",&quot;basename&quot;:&quot;"+attach.Filename+"&quot;" +
+                          ",&quot;filename&quot;:&quot;"+attach.Filename+"&quot;}\" " +
                           "target=\"_blank\" rel=\"noopener noreferrer nofollow\">" +
-                          "32cfc851e4d8686c8a7f32bde6f498fca162279481679fb0136e1769e4e05d.mp4</a></p>"
+                          ""+attach.Filename+"</a></p>"
                 };
                 insertComment(id, coment);
             }
             catch (Exception ex)
             {
 
-                throw;
+                ErroresBitacora errorBitacora = new ErroresBitacora();
+                errorBitacora.menssageError = ex.ToString();
+                errorBitacora.Fecha = DateTime.Now;
+                Context.ErroresBitacora.Add(errorBitacora);
+                Context.SaveChanges();
             }
         }
 
@@ -362,7 +394,11 @@ namespace InfintyHibotPlt.Datos.Infinity
             catch (Exception ex)
             {
 
-                ResponseAttach = null;
+                ErroresBitacora errorBitacora = new ErroresBitacora();
+                errorBitacora.menssageError = ex.ToString();
+                errorBitacora.Fecha = DateTime.Now;
+                Context.ErroresBitacora.Add(errorBitacora);
+                Context.SaveChanges();
             }
         }
     }
