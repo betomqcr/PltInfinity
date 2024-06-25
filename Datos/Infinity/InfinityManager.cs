@@ -9,6 +9,7 @@ using System.Text;
 using System.IO;
 using System;
 using System.Text.RegularExpressions;
+using InfintyHibotPlt.Datos.Infinity.Attachaments;
 
 namespace InfintyHibotPlt.Datos.Infinity
 {
@@ -241,6 +242,27 @@ namespace InfintyHibotPlt.Datos.Infinity
                 return null;
             }
         }
+
+        public  Stream Stream(byte[] archivo)
+        {
+            try
+            {
+                return new MemoryStream(archivo)
+                {
+                    Position = 0
+                };
+
+            }
+            catch (Exception ex)
+            {
+                ErroresBitacora errorBitacora = new ErroresBitacora();
+                errorBitacora.menssageError = ex.ToString();
+                errorBitacora.Fecha = DateTime.Now;
+                Context.ErroresBitacora.Add(errorBitacora);
+                Context.SaveChanges();
+                return null;
+            }
+        }
         public void CreateItemInfinity(long id)
         {
             try
@@ -273,14 +295,20 @@ namespace InfintyHibotPlt.Datos.Infinity
                     foreach(Messages temp in messages)
                     {
                         if(temp.mediaType==null || temp.mediaType.Equals("RICHLINK"))
-                        CreateComentsItem(conversation.idItemInfinity,temp.content);
+                        CreateComentsItem(conversation.idItemInfinity,temp);
                         else
                         {
                             Imagenes imagenes = Context.Imagenes.Where(x => x.messagesidMessages == temp.idMessages).FirstOrDefault();
-                            if(imagenes!=null)
+                            if (imagenes!=null)
                             {
-                                byte[] file = Convert.FromBase64String(imagenes.Archivo);
-                                CreateImageForComments(file, temp.mediaType);
+                                Uri uri = new Uri(temp.media);
+                                Attachament attachament = new Attachament 
+                                {
+                                    Url= uri
+                                }; 
+                                CreateImageForComments(attachament);
+
+                                CreateComentsItemFile(conversation.idItemInfinity, ResponseAttach, temp);
 
                             }
                             
@@ -299,13 +327,13 @@ namespace InfintyHibotPlt.Datos.Infinity
                 Context.SaveChanges();
             }
         }
-        public void CreateComentsItem(string id, string text)
+        public void CreateComentsItem(string id, Messages mensaje)
         {
             try
             {
                 Comment coment = new Comment
                 {
-                    Text = "<p>"+text+"<p/>"
+                    Text = "<p><h3>"+mensaje.personContent+"</h3><br>"+mensaje.content+"<p/>"
                 };
                 insertComment(id, coment);
             }
@@ -320,13 +348,13 @@ namespace InfintyHibotPlt.Datos.Infinity
             }
         }
 
-        public void CreateComentsItemFile(string id, Attachaments.Response.ResponseAttach attach )
+        public void CreateComentsItemFile(string id, Attachaments.Response.ResponseAttach attach, Messages mensagge )
         {
             try
             {
                 Comment coment = new Comment
                 {
-                    Text = "<p><a href=\""+attach.Link+"\" " +
+                    Text = "<p><h3>" + mensagge.personContent+ "</h3><br>< a href=\""+attach.Link+"\" " +
                           "data-attachment=\"{&quot;" +
                           "id&quot;"+attach.Id+",&quot;" +
                           "link&quot;:&quot;"+attach.Link+"&quot;,&quot;" +
@@ -358,14 +386,13 @@ namespace InfintyHibotPlt.Datos.Infinity
             }
         }
 
-        public async void  CreateImageForComments(byte[] file,string Type)
+        public async void  CreateImageForComments(Stream file,string Type)
         {
             try
-            {
-                var byteArrayContent = new ByteArrayContent(file);
+            {             
 
                 var form = new MultipartFormDataContent();
-                form.Add(byteArrayContent, "archivo", Type);
+                form.Add(new StreamContent(file));
                 string url = ApiUrl + "/api/v2/workspaces/" + WorkSpace +"/attachments/file";
                 var client = new HttpClient();
                 var request = new HttpRequestMessage(HttpMethod.Post, url);
@@ -394,6 +421,45 @@ namespace InfintyHibotPlt.Datos.Infinity
             catch (Exception ex)
             {
 
+                ErroresBitacora errorBitacora = new ErroresBitacora();
+                errorBitacora.menssageError = ex.ToString();
+                errorBitacora.Fecha = DateTime.Now;
+                Context.ErroresBitacora.Add(errorBitacora);
+                Context.SaveChanges();
+            }
+        }
+
+        public async void CreateImageForComments(Attachaments.Attachament attachaments)
+        {
+            try
+            {
+                string url = ApiUrl + "/api/v2/workspaces/" + WorkSpace + "/attachments/url";
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, url);
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Bearer " + Token);
+                var content = new StringContent(attachaments.ToJson(), null, "application/json");
+                request.Content = content;
+
+                var response = await client.SendAsync(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                {
+                    Attachaments.Response.ResponseAttach responseAttach = new Attachaments.Response.ResponseAttach();
+                    var task2 = Task<string>.Run(async () =>
+                    {
+                        return await response.Content.ReadAsStringAsync();
+                    });
+                    var jsonstrig = task2.Result;
+                    ResponseAttach = JsonConvert.DeserializeObject<Attachaments.Response.ResponseAttach>(jsonstrig);
+
+                }
+                else
+                {
+                    ResponseAttach = null;
+                }
+            }
+            catch (Exception ex)
+            {
                 ErroresBitacora errorBitacora = new ErroresBitacora();
                 errorBitacora.menssageError = ex.ToString();
                 errorBitacora.Fecha = DateTime.Now;
