@@ -272,7 +272,7 @@ namespace InfintyHibotPlt.Datos.Infinity
                     List<Messages> messages = Context.Messages.Where(x=>x.ConversationidConversation==conversation.idConversation).ToList();
                     foreach(Messages temp in messages)
                     {
-                        if(temp.mediaType!=null)
+                        if(temp.mediaType==null || temp.mediaType.Equals("RICHLINK"))
                         CreateComentsItem(conversation.idItemInfinity,temp.content);
                         else
                         {

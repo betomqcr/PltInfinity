@@ -163,7 +163,7 @@ namespace InfintyHibotPlt.Controllers
                         };
 
                         if (temp.media != null)
-                        {
+                        { 
                             messages.media = temp.media.ToString();
                             messages.mediaType = temp.mediaType;
                         }
@@ -180,17 +180,22 @@ namespace InfintyHibotPlt.Controllers
                             string media = temp.media.ToString() ?? "";
                             if (!temp.mediaType.Equals("STICKER"))
                             {
-                                HibotManager hibot = new HibotManager();
-                                long idMessage = context.Messages.Where(x => x.idHibotMessages.Equals(temp.Id) && !x.mediaType.Equals("STICKER")).FirstOrDefault().idMessages;
-                                string file = await hibot.ProcessImage(media);
-                                Imagenes imagenes = new Imagenes
+                                if (!temp.mediaType.Equals("RICHLINK"))
                                 {
-                                    fecha = DateTimeOffset.Now,
-                                    Archivo = file,
-                                    messagesidMessages = idMessage
-                                };
-                                context.Imagenes.Add(imagenes);
-                                context.SaveChanges();
+                                    HibotManager hibot = new HibotManager();
+                                    long idMessage = context.Messages.Where(x => x.idHibotMessages.Equals(temp.Id) && !x.mediaType.Equals("STICKER")).FirstOrDefault().idMessages;
+                                    string file = await hibot.ProcessImage(media);
+                                    Imagenes imagenes = new Imagenes
+                                    {
+                                        fecha = DateTimeOffset.Now,
+                                        Archivo = file,
+                                        messagesidMessages = idMessage
+                                    };
+                                    context.Imagenes.Add(imagenes);
+                                    context.SaveChanges();
+
+                                }
+                                
                             }
 
                         }
