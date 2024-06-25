@@ -10,6 +10,7 @@ using System.IO;
 using System;
 using System.Text.RegularExpressions;
 using InfintyHibotPlt.Datos.Infinity.Attachaments;
+using InfintyHibotPlt.Datos.Infinity.Attachaments.Response;
 
 namespace InfintyHibotPlt.Datos.Infinity
 {
@@ -352,26 +353,15 @@ namespace InfintyHibotPlt.Datos.Infinity
         {
             try
             {
+                string objetoAttach = attach.ToJson();
+
+                string text1 = $@"<p><a href=\"+attach.Link;
+                string text2 = $@"data-attachment=\"+objetoAttach;
+                string text3 = $@"\"+ "target=\"_blank\" rel=\"noopener noreferrer nofollow\">"+attach.Basename+"."+attach.Extension+"</a></p>";                            
+
                 Comment coment = new Comment
                 {
-                    Text = "<p><h3>" + mensagge.personContent+ "</h3><br>< a href=\""+attach.Link+"\" " +
-                          "data-attachment=\"{&quot;" +
-                          "id&quot;"+attach.Id+",&quot;" +
-                          "link&quot;:&quot;"+attach.Link+"&quot;,&quot;" +
-                          "path&quot;:&quot;"+attach.Path+"&quot;" +
-                          ",&quot;original_name&quot;:&quot;"+attach.OriginalName+"&quot;" +
-                          ",&quot;filesize&quot;:"+attach.Filesize+",&quot;" +
-                          "thumb&quot;:null,&quot;" +
-                          "created_at&quot;:&quot;"+attach.CreatedAt+"&quot;" +
-                          ",&quot;updated_at&quot;:&quot;"+attach.UpdatedAt+"&quot;" +
-                          ",&quot;team_id&quot;:"+attach.TeamId+",&quot;" +
-                          "deleted_at&quot;:null,&quot;" +
-                          "checked_at&quot;:null,&quot;" +
-                          "extension&quot;:&quot;"+attach.Extension+"&quot;" +
-                          ",&quot;basename&quot;:&quot;"+attach.Filename+"&quot;" +
-                          ",&quot;filename&quot;:&quot;"+attach.Filename+"&quot;}\" " +
-                          "target=\"_blank\" rel=\"noopener noreferrer nofollow\">" +
-                          ""+attach.Filename+"</a></p>"
+                    Text = text1+text2+text3
                 };
                 insertComment(id, coment);
             }
