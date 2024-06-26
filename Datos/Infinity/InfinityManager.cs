@@ -211,7 +211,7 @@ namespace InfintyHibotPlt.Datos.Infinity
                     
                 };
 
-                if(pregunta.Equals(Status) || pregunta.Equals(Origen))
+                if(pregunta.Equals(Status) || pregunta.Equals(Origen)||pregunta.Equals(TypeSupport))
                 {
                     List<Datum> guids = new List<Datum>();
                     Datum guid = Guid.Parse(respuesta);
