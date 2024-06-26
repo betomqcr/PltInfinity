@@ -36,6 +36,8 @@ namespace InfintyHibotPlt.Datos.Infinity
         public string WorkSpace { get; set; }
         public string Board { get; set; }
         public string Folder { get; set; }
+        public string TypeSupport { get; set; }
+        public string TypeSupportRes { get; set; }
         public List<AgentConfig> Agents { get; set; }
         public Attachaments.Response.ResponseAttach ResponseAttach { get; set; }
         public InfinityManager(IConfiguration configuration, ApplicationDbContext _context)
@@ -60,6 +62,8 @@ namespace InfintyHibotPlt.Datos.Infinity
             this.NumWA = Configuration["Infinity:NumWA"];
             this.Origen = Configuration["Infinity:Origen"];
             this.OrigenResp = Configuration["Infinity:OrigenResp"];
+            this.TypeSupport = Configuration["Infinity:TypeSupport"];
+            this.TypeSupportRes = Configuration["Infinity:TypeSupportRes"];
             CargarAgents();
             this.ResponseAttach = new Attachaments.Response.ResponseAttach();
 
@@ -243,7 +247,6 @@ namespace InfintyHibotPlt.Datos.Infinity
                 return null;
             }
         }
-
         public  Stream Stream(byte[] archivo)
         {
             try
@@ -277,11 +280,13 @@ namespace InfintyHibotPlt.Datos.Infinity
                     Value Value3 = ValueItem(Name, conversation.contactName);
                     Value Value4 = ValueItem(Origen, OrigenResp);
                     Value Value5 = ValueItem(AssignedPor, Agents.Where(x=>x.Nombre.Equals(conversation.agente)).FirstOrDefault().AgenteCod.ToString());
+                    Value Value6 = ValueItem(TypeSupport, TypeSupportRes);
                     values.Add(Value1);
                     values.Add(Value2);
                     values.Add(Value3);
                     values.Add(Value4);
                     values.Add(Value5);
+                    values.Add(Value6);
                     Item item = new Item
                     {
                         FolderId = Folder,
@@ -348,7 +353,6 @@ namespace InfintyHibotPlt.Datos.Infinity
                 Context.SaveChanges();
             }
         }
-
         public void CreateComentsItemFile(string id, Attachaments.Response.ResponseAttach attach, Messages mensagge )
         {
             try
@@ -375,7 +379,6 @@ namespace InfintyHibotPlt.Datos.Infinity
                 Context.SaveChanges();
             }
         }
-
         public async void  CreateImageForComments(Stream file,string Type)
         {
             try
@@ -418,7 +421,6 @@ namespace InfintyHibotPlt.Datos.Infinity
                 Context.SaveChanges();
             }
         }
-
         public async void CreateImageForComments(Attachaments.Attachament attachaments)
         {
             try
