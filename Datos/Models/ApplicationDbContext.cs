@@ -25,7 +25,7 @@ namespace InfintyHibotPlt.Datos.Models
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<Messages> Messages { get; set; }
         public DbSet<Bitacora> Bitacora { get; set; }
-
+        public DbSet<Entrada> Entrada { get; set; }
         public DbSet<Imagenes> Imagenes { get; set; }
         public DbSet<ErroresBitacora> ErroresBitacora { get; set; }
     }
