@@ -216,7 +216,7 @@ namespace InfintyHibotPlt.Controllers
                             closed = request.Conversations[0].Closed,
                             create = request.Conversations[0].Created,
                             assigend = request.Conversations[0].Assigned
-                        };
+                        };                      
                         context.Conversations.Add(conversation);
                         context.SaveChanges();
                         long idConvesartion = context.Conversations.Where(x => x.idHibotConversation.Equals(conversation.idHibotConversation)).First().idConversation;

@@ -11,7 +11,7 @@ namespace InfintyHibotPlt.Datos.Models.settings
         {
             builder.HasKey(e => e.idConversation);
             builder.Property(e => e.contactName)
-                .HasMaxLength(50)
+                .HasMaxLength(150)
                 .IsRequired();
             builder.Property(e=> e.idItemInfinity).IsRequired(false).HasMaxLength(200);
             builder.Property(e => e.typing).IsRequired();
