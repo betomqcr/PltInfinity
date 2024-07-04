@@ -288,7 +288,7 @@ namespace InfintyHibotPlt.Datos.Infinity
                 Conversation conversation = Context.Conversations.Find(id);
                 if(conversation!=null)
                 {
-                    string status = SelectResponseStatusHibot(conversation.estado);
+                    string status = SelectResponseStatusHibot(conversation.typing);
                     List<Value> values = new List<Value>();
                     Value Value1 = ValueItem(Status, StatusTiketOpen);
                     Value Value2 = ValueItem(NumWA, conversation.contactPhoneWA);
@@ -475,28 +475,52 @@ namespace InfintyHibotPlt.Datos.Infinity
                 Context.SaveChanges();
             }
         }
+        //public string SelectResponseStatusHibot(string request)
+        //{
+        //    try
+        //    {
+        //        if (HibotStatusInactividad.Equals(request))
+        //            return HibotStatusInactividad;
+        //        if (HibotStatusTerminado.Equals(request))
+        //            return HibotStatusTerminado;
+        //        if (HibotStatusPendiente.Equals(request))
+        //            return HibotStatusPendiente;
+        //        if(HibotStatusAdministrativa.Equals(request))
+        //            return HibotStatusAdministrativa;
+        //        if (HibotStatusVentas.Equals(request))
+        //            return HibotStatusVentas;
+        //        if (HibotStatusProgramacion.Equals(request))
+        //            return HibotStatusProgramacion;
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        return "";
+        //    }
+        //}
         public string SelectResponseStatusHibot(string request)
         {
             try
             {
-                if (HibotStatusInactividad.Equals(request))
+                if (request.Equals("Inactividad"))
                     return HibotStatusInactividad;
-                if (HibotStatusTerminado.Equals(request))
+                if (request.Equals("Soporte terminado"))
                     return HibotStatusTerminado;
-                if (HibotStatusPendiente.Equals(request))
+                if (request.Equals("Soporte Pendiente"))
                     return HibotStatusPendiente;
-                if(HibotStatusAdministrativa.Equals(request))
+                if (request.Equals("Consulta Administrativa"))
                     return HibotStatusAdministrativa;
-                if (HibotStatusVentas.Equals(request))
+                if (request.Equals("Traslado Ventas"))
                     return HibotStatusVentas;
-                if (HibotStatusProgramacion.Equals(request))
+                if (request.Equals("Programacion"))
                     return HibotStatusProgramacion;
-                return null;
+                return "7f6abc58-8dcc-4b1e-b827-3fcfb76b190e";
             }
             catch (Exception ex)
             {
 
-                return "";
+                return "7f6abc58-8dcc-4b1e-b827-3fcfb76b190e";
             }
         }
 
