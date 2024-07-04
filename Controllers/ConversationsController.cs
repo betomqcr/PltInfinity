@@ -116,7 +116,7 @@ namespace InfintyHibotPlt.Controllers
                         bitacora2.jsonEntrada = Serialize.ToJson(request);
                         context.Bitacora.Add(bitacora2);
                         context.SaveChanges();
-                        InfinityManager infinity = new InfinityManager(configuration, context);
+                        //InfinityManager infinity = new InfinityManager(configuration, context);
                         infinity.CreateItemInfinity(idConvesartion);
 
                         return Ok();
@@ -267,7 +267,7 @@ namespace InfintyHibotPlt.Controllers
                         bitacora2.jsonEntrada = Serialize.ToJson(request);
                         context.Bitacora.Add(bitacora2);
                         context.SaveChanges();
-                        InfinityManager infinity = new InfinityManager(configuration, context);
+                        //InfinityManager infinity = new InfinityManager(configuration, context);
                         infinity.CreateItemInfinity(idConvesartion);
 
                         return Ok();
