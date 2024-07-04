@@ -27,9 +27,7 @@ namespace InfintyHibotPlt.Controllers
             this.context = _context;
             this.configuration = _configuration;
             this.infinity = new InfinityManager(configuration, context);
-        }
-
-        
+        }        
 
         [HttpPost]
         [Route("recibir")]
@@ -152,8 +150,6 @@ namespace InfintyHibotPlt.Controllers
                 return Ok();
             }
         }
-
-
 
         [HttpPost]
         [Route("recibir2")]
@@ -305,10 +301,6 @@ namespace InfintyHibotPlt.Controllers
                 return Ok();
             }
         }
-
-
-
-
 
     }
 }
