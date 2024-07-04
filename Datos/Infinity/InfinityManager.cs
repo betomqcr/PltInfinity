@@ -39,6 +39,13 @@ namespace InfintyHibotPlt.Datos.Infinity
         public string TypeSupport { get; set; }
         public string TypeSupportRes { get; set; }
         public List<AgentConfig> Agents { get; set; }
+        public string HibotStatus {  get; set; }            
+        public string HibotStatusInactividad { get; set; }
+        public string HibotStatusTerminado { get; set; }
+        public string HibotStatusPendiente { get; set; }
+        public string HibotStatusAdministrativa { get; set; }
+        public string HibotStatusVentas { get; set; }
+        public string HibotStatusProgramacion { get; set; }
         public Attachaments.Response.ResponseAttach ResponseAttach { get; set; }
         public InfinityManager(IConfiguration configuration, ApplicationDbContext _context)
         {
@@ -64,6 +71,13 @@ namespace InfintyHibotPlt.Datos.Infinity
             this.OrigenResp = Configuration["Infinity:OrigenResp"];
             this.TypeSupport = Configuration["Infinity:TypeSupport"];
             this.TypeSupportRes = Configuration["Infinity:TypeSupportRes"];
+            this.HibotStatus = Configuration["Infinity:HibotStatus"];
+            this.HibotStatusAdministrativa = Configuration["Infinity:HibotStatusAdministrativa"];
+            this.HibotStatusInactividad = Configuration["Infinity:HibotStatusInactividad"];
+            this.HibotStatusPendiente = Configuration["Infinity:HibotStatusPendiente"];
+            this.HibotStatusProgramacion = Configuration["Infinity:HibotStatusProgramacion"];
+            this.HibotStatusTerminado = Configuration["Infinity:HibotStatusTerminado"];
+            this.HibotStatusVentas = Configuration["Infinity:HibotStatusVentas"];
             CargarAgents();
             this.ResponseAttach = new Attachaments.Response.ResponseAttach();
 
@@ -211,7 +225,7 @@ namespace InfintyHibotPlt.Datos.Infinity
                     
                 };
 
-                if(pregunta.Equals(Status) || pregunta.Equals(Origen)||pregunta.Equals(TypeSupport))
+                if(pregunta.Equals(Status) || pregunta.Equals(Origen)||pregunta.Equals(TypeSupport)||pregunta.Equals(HibotStatus))
                 {
                     List<Datum> guids = new List<Datum>();
                     Datum guid = Guid.Parse(respuesta);
@@ -274,6 +288,7 @@ namespace InfintyHibotPlt.Datos.Infinity
                 Conversation conversation = Context.Conversations.Find(id);
                 if(conversation!=null)
                 {
+                    string status = SelectResponseStatusHibot(conversation.estado);
                     List<Value> values = new List<Value>();
                     Value Value1 = ValueItem(Status, StatusTiketOpen);
                     Value Value2 = ValueItem(NumWA, conversation.contactPhoneWA);
@@ -281,12 +296,14 @@ namespace InfintyHibotPlt.Datos.Infinity
                     Value Value4 = ValueItem(Origen, OrigenResp);
                     Value Value5 = ValueItem(AssignedPor, Agents.Where(x=>x.Nombre.Equals(conversation.agente)).FirstOrDefault().AgenteCod.ToString());
                     Value Value6 = ValueItem(TypeSupport, TypeSupportRes);
+                    Value Value7 = ValueItem(HibotStatus,status);
                     values.Add(Value1);
                     values.Add(Value2);
                     values.Add(Value3);
                     values.Add(Value4);
                     values.Add(Value5);
                     values.Add(Value6);
+                    values.Add(Value7);
                     Item item = new Item
                     {
                         FolderId = Folder,
@@ -296,7 +313,6 @@ namespace InfintyHibotPlt.Datos.Infinity
                     conversation.idItemInfinity= ItemResponse.Id.ToString();
                     Context.Update(conversation);
                     Context.SaveChanges();
-
                     List<Messages> messages = Context.Messages.Where(x=>x.ConversationidConversation==conversation.idConversation).ToList();
                     foreach(Messages temp in messages)
                     {
@@ -459,5 +475,30 @@ namespace InfintyHibotPlt.Datos.Infinity
                 Context.SaveChanges();
             }
         }
+        public string SelectResponseStatusHibot(string request)
+        {
+            try
+            {
+                if (HibotStatusInactividad.Equals(request))
+                    return HibotStatusInactividad;
+                if (HibotStatusTerminado.Equals(request))
+                    return HibotStatusTerminado;
+                if (HibotStatusPendiente.Equals(request))
+                    return HibotStatusPendiente;
+                if(HibotStatusAdministrativa.Equals(request))
+                    return HibotStatusAdministrativa;
+                if (HibotStatusVentas.Equals(request))
+                    return HibotStatusVentas;
+                if (HibotStatusProgramacion.Equals(request))
+                    return HibotStatusProgramacion;
+                return null;
+            }
+            catch (Exception ex)
+            {
+
+                return "";
+            }
+        }
+
     }
 }
