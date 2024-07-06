@@ -298,8 +298,7 @@ namespace InfintyHibotPlt.Datos.Infinity
                     Value Value4 = ValueItem(Origen, OrigenResp);
                     Value Value5 = ValueItem(AssignedPor, Agents.Where(x=>x.Nombre.Equals(conversation.agente)).FirstOrDefault().AgenteCod.ToString());
                     Value Value6 = ValueItem(TypeSupport, TypeSupportRes);
-                    Value Value7 = ValueItem(HibotStatus,status);
-                    Value Value8 =ValueItem(Clinica,conversation.clinica);
+                    Value Value7 = ValueItem(HibotStatus,status);                    
                     values.Add(Value1);
                     values.Add(Value2);
                     values.Add(Value3);
@@ -307,7 +306,12 @@ namespace InfintyHibotPlt.Datos.Infinity
                     values.Add(Value5);
                     values.Add(Value6);
                     values.Add(Value7);
-                    values.Add(Value8);
+                    if (conversation.clinica!=null)
+                    {
+                        Value Value8 = ValueItem(Clinica, conversation.clinica);
+                        values.Add(Value8);
+                    }
+                    
                     Item item = new Item
                     {
                         FolderId = Folder,

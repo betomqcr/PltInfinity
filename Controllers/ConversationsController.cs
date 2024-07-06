@@ -60,9 +60,11 @@ namespace InfintyHibotPlt.Controllers
                             idHibotConversation = request.Conversations[0].Id,
                             closed = request.Conversations[0].Closed,
                             create = request.Conversations[0].Created,
-                            assigend = request.Conversations[0].Assigned,
-                            clinica = request.Conversations[0].Contacts[0].Fields.Clinica
+                            assigend = request.Conversations[0].Assigned
+                            
                         };
+                        if(request.Conversations[0].Contacts[0].Fields.Clinica!=null)
+                           conversation.clinica = request.Conversations[0].Contacts[0].Fields.Clinica;                       
                         context.Conversations.Add(conversation);
                         context.SaveChanges();
                         long idConvesartion = context.Conversations.Where(x => x.idHibotConversation.Equals(conversation.idHibotConversation)).First().idConversation;
