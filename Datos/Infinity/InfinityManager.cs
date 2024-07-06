@@ -46,6 +46,7 @@ namespace InfintyHibotPlt.Datos.Infinity
         public string HibotStatusAdministrativa { get; set; }
         public string HibotStatusVentas { get; set; }
         public string HibotStatusProgramacion { get; set; }
+        public string Clinica { get; set; }
         public Attachaments.Response.ResponseAttach ResponseAttach { get; set; }
         public InfinityManager(IConfiguration configuration, ApplicationDbContext _context)
         {
@@ -78,6 +79,7 @@ namespace InfintyHibotPlt.Datos.Infinity
             this.HibotStatusProgramacion = Configuration["Infinity:HibotStatusProgramacion"];
             this.HibotStatusTerminado = Configuration["Infinity:HibotStatusTerminado"];
             this.HibotStatusVentas = Configuration["Infinity:HibotStatusVentas"];
+            this.Clinica = Configuration["Infinity:Clinica"];
             CargarAgents();
             this.ResponseAttach = new Attachaments.Response.ResponseAttach();
 
@@ -297,6 +299,7 @@ namespace InfintyHibotPlt.Datos.Infinity
                     Value Value5 = ValueItem(AssignedPor, Agents.Where(x=>x.Nombre.Equals(conversation.agente)).FirstOrDefault().AgenteCod.ToString());
                     Value Value6 = ValueItem(TypeSupport, TypeSupportRes);
                     Value Value7 = ValueItem(HibotStatus,status);
+                    Value Value8 =ValueItem(Clinica,conversation.clinica);
                     values.Add(Value1);
                     values.Add(Value2);
                     values.Add(Value3);
@@ -304,6 +307,7 @@ namespace InfintyHibotPlt.Datos.Infinity
                     values.Add(Value5);
                     values.Add(Value6);
                     values.Add(Value7);
+                    values.Add(Value8);
                     Item item = new Item
                     {
                         FolderId = Folder,

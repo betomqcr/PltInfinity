@@ -13,6 +13,7 @@ namespace InfintyHibotPlt.Datos.Models.settings
             builder.Property(e => e.contactName)
                 .HasMaxLength(150)
                 .IsRequired();
+            builder.Property(e => e.clinica).IsRequired(false).HasMaxLength(150);
             builder.Property(e=> e.idItemInfinity).IsRequired(false).HasMaxLength(200);
             builder.Property(e => e.typing).IsRequired();
             builder.Property(e => e.agente).IsRequired().HasMaxLength(200);
