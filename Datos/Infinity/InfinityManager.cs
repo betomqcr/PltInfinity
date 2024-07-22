@@ -82,7 +82,7 @@ namespace InfintyHibotPlt.Datos.Infinity
             this.Clinica = Configuration["Infinity:Clinica"];
             CargarAgents();
             this.ResponseAttach = new Attachaments.Response.ResponseAttach();
-
+            
         }
         public void CargarAgents()
         {
