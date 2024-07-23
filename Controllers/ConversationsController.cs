@@ -205,7 +205,6 @@ namespace InfintyHibotPlt.Controllers
                     {
                         Conversation conversation = new Conversation
                         {
-                            contactName = request.Conversations[0].Contacts[0].Fields.Name,
                             contactPhoneWA = request.Conversations[0].Contacts[0].Account,
                             agente = request.Conversations[0].Agent.Name,
                             agenteEmail = request.Conversations[0].Agent.Email,
@@ -216,6 +215,10 @@ namespace InfintyHibotPlt.Controllers
                             create = request.Conversations[0].Created,
                             assigend = request.Conversations[0].Assigned
                         };
+                        if (request.Conversations[0].Contacts[0].Fields.Name != null)
+                            conversation.contactName = request.Conversations[0].Contacts[0].Fields.Name;
+                        else
+                            conversation.contactName = "Sin Nombre";
                         if (request.Conversations[0].Contacts[0].Fields.Clinica != null)
                             conversation.clinica = request.Conversations[0].Contacts[0].Fields.Clinica;
                         context.Conversations.Add(conversation);
